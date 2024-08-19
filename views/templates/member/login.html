@@ -2,44 +2,45 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>세미프로젝트</title><link rel="stylesheet" href="/static/css/project.css">
+  <title>세미프로젝트</title>
+  <link rel="stylesheet" href="/static/css/bs5/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/css/project.css">
   <style>
-    form { width: 350px; margin: 110px auto; }
-    form label { display: inline-block; width: 120px; text-align: right;
-      font-weight: bold; }
-    form div { margin: 5px 0; }
-    form input { padding: 5px; }
-    button { width: 80px; margin-left: 8px; padding: 3px; }
-
-
   </style>
 </head>
 <body>
-  <div id="wrap">
-    <header><h1>세미프로젝트 v1</h1></header>
-    <nav><ul id="menu">
-      <li><a href="/">Home</a></li>
-      <li><a href="/member/join">회원가입</a></li>
-      <li><a href="/member/login">로그인</a></li>
-      <li><a href="/board/list">게시판</a></li>
-      <li><a href="/member/myinfo">회원정보</a></li>
-    </ul>
-    </nav>
+
+  <div id="wrap" class="container">
+      <header class="py-3"><h1>세미프로젝트 v1</h1></header>
+      <nav><ul id="menu" class="nav nav-fill">
+          <li class="nav-item"><a class="nav-link" aria-current="page" href="/">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="/member/join">회원가입</a></li>
+          <li class="nav-item"><a class="nav-link" href="/member/login">로그인</a></li>
+          <li class="nav-item"><a class="nav-link" href="/board/list">게시판</a></li>
+          <li class="nav-item"><a class="nav-link" href="/member/myinfo">회원정보</a></li>
+          </ul>
+      </nav>
     <hr>
     <main>
       <h2>로그인</h2>
-      <form name="loginfrm" method="post" id="login">
-        <div><label for="userid">아이디</label>
-          <input type="text" name="userid" id="userid" required></div>
-        <div><label for="passwd">비밀번호</label>
-          <input type="password" name="passwd" id="passwd" required></div>
-        <div><label></label><button type="submit" id="loginbtn">로그인</button></div>
-      </form>
+        <div class="d-flex justify-content-center align-items-center" style="height: 65vh">
+        <form name="loginfrm" method="post" id="login" class="col-5">
+        <div class="row my-2"><label for="userid" class="col-form-label col-4 text-end">아이디</label>
+            <div class="col-7">
+            <input type="text" name="userid" id="userid" required class="form-control"></div></div>
+        <div class="row my-2"><label for="passwd" class="col-form-label col-4 text-end">비밀번호</label>
+            <div class="col-7">
+            <input type="password" name="passwd" id="passwd" required class="form-control"></div></div>
+        <div class="row my-2"><label class="col-form-label col-4 text-end"></label>
+            <div class="col-7">
+            <button type="submit" id="loginbtn" class="btn btn-dark">로그인</button></div></div>
+        </form>
+        </div>
     </main>
 
     <footer>
       <hr>
-      <p id="ft">copyright &copy; 2024. yoonsun. All Rights Reserved</p>
+      <p class="text-center">copyright &copy; 2024. yoonsun. All Rights Reserved</p>
     </footer>
   </div>
 </body>
