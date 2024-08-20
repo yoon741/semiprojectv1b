@@ -1,12 +1,22 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from starlette.requests import Request
 from starlette.responses import HTMLResponse
 from starlette.staticfiles import StaticFiles
 from starlette.templating import Jinja2Templates
 
+from app.dbfactory import db_startup, db_shutdown
 from app.routes.member import member_router
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await db_startup()
+    yield
+    await db_shutdown()
+
 app = FastAPI()
+
 templates = Jinja2Templates(directory='views/templates')
 app.mount('/static', StaticFiles(directory='views/static'),name='static')
 
