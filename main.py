@@ -15,7 +15,7 @@ async def lifespan(app: FastAPI):
     yield
     await db_shutdown()
 
-app = FastAPI()
+app = FastAPI(lifespan=lifespan)
 
 templates = Jinja2Templates(directory='views/templates')
 app.mount('/static', StaticFiles(directory='views/static'),name='static')
