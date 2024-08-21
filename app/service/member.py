@@ -13,8 +13,8 @@ class MemberService:
                 userid=member.userid, passwd=member.passwd,
                 name=member.name, email=member.email)
             result = db.execute(stmt)
-            db.flush()
-            db.commit()  # 정상처리될 경우 commit후 return
+            db.flush()   # 데이터베이스에 변경 사항을 즉시 반영하도록 하는 메서드
+            db.commit()  # 정상처리될 경우 commit 후 return
             return result
 
         except SQLAlchemyError as ex:   # 예외처리 코드
