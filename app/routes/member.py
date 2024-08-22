@@ -43,10 +43,10 @@ async def login(req: Request):
 async def loginok(req: Request, db: Session = Depends(get_db)):
     data = await req.json()     # 클라이언트가 보낸 데이터를 request 객체로 받음
     try:
-        redirect_url = '/member/loginfail'      # 로그인 실패시 loginfail로 이동
+        redirect_url = '/member/loginefail'      # 로그인 실패시 loginfail로 이동
 
         if MemberService.login_member(db, data):            # 로그인 성공 시
-            req.session['logind_uid'] = data.get('userid')  # 세션에 아이디 저장하고
+            req.session['logined_uid'] = data.get('userid')  # 세션에 아이디 저장하고
             redirect_url = '/member/myinfo'                 # myinfo 로 이동
 
         return RedirectResponse(url=redirect_url, status_code=303)
@@ -55,11 +55,20 @@ async def loginok(req: Request, db: Session = Depends(get_db)):
         print(f'▶▶▶loginok 오류 : {str(ex)}')
         return RedirectResponse(url='/member/error', status_code=303)
 
+@member_router.get('/logout', response_class=HTMLResponse)
+async def error(req: Request):
+    req.session.clear()   # 생성된 세션객체 제거
+    return RedirectResponse('/', status_code=303)
+
 
 @member_router.get('/myinfo', response_class=HTMLResponse)
 async def myinfo(req: Request):
     return templates.TemplateResponse('member/myinfo.html', {'request': req})
 
 @member_router.get('/error', response_class=HTMLResponse)
+async def error(req: Request):
+    return templates.TemplateResponse('member/error.html', {'request': req})
+
+@member_router.get('/loginfail', response_class=HTMLResponse)
 async def error(req: Request):
     return templates.TemplateResponse('member/error.html', {'request': req})
