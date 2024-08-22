@@ -1,4 +1,4 @@
-from sqlalchemy import insert
+from sqlalchemy import insert, select, and_
 import requests
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -27,7 +27,7 @@ class MemberService:
     @staticmethod
     def check_captcha(member):
         req_url = 'https://www.google.com/recaptcha/api/siteverify'
-        params = { 'secret': '',
+        params = { 'secret': '6LeSoCsqAAAAAMU0PEaTL06z2zNjsqfORPRRZSh0',
                    'response': member.captcha }
         res = requests.get(req_url, params=params)
         result = res.json()
@@ -35,3 +35,17 @@ class MemberService:
 
         return result['success']
         # return True
+
+
+    @staticmethod
+    def login_member(db, data):
+        try:   # 성공시 /routes/member.py에 loginok로 인해  myinfo페이지로 넘어감
+            find_login = and_(Member.userid == data.get('userid'),
+                              Member.passwd == data.get('passwd'))  # 테이블에 저장된 값과 일치하는지 확인
+            stmt = select(Member.userid).where(find_login)  #find_login조건을 만족하는 값의 userid를 선택하는 쿼리문 생성
+            result = db.execute(stmt).scalars().first()   # 쿼리를 실행하고, 첫번째 userid결과 값을 가져옴
+
+            return result  # 유저아이디 반환
+
+        except SQLAlchemyError as ex:
+            print(f'login_member 오류 발생 : {str(ex)}')
