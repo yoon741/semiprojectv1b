@@ -43,7 +43,7 @@ async def login(req: Request):
 async def loginok(req: Request, db: Session = Depends(get_db)):
     data = await req.json()     # 클라이언트가 보낸 데이터를 request 객체로 받음
     try:
-        redirect_url = '/member/loginefail'      # 로그인 실패시 loginfail로 이동
+        redirect_url = '/member/loginfail'      # 로그인 실패시 loginfail로 이동
 
         if MemberService.login_member(db, data):            # 로그인 성공 시
             req.session['logined_uid'] = data.get('userid')  # 세션에 아이디 저장하고
@@ -63,14 +63,14 @@ async def error(req: Request):
 
 @member_router.get('/myinfo', response_class=HTMLResponse)
 async def myinfo(req: Request, db: Session = Depends(get_db)):
-    try:
-        if 'logined_uid' not in req.session:   # 로그인하지 않았다면
-            return RedirectResponse(url='/member/login', status_code=303)
-
+    try:                                       # myinfo를 눌렀을 때
+        if 'logined_uid' not in req.session:   # logined_uid이 세션에 존재하지 않으면 로그인하지 않은 것으로 간주
+            return RedirectResponse(url='/member/login', status_code=303)   # 로그인페이지로 리디렉션하여 로그인하도록 유도
+                                                         # HTTP 상태 코드 303 - see other(요청을 url로 리디렉션)
         # 로그인 했다면 아이디로 회원정보 조회후 myinfo에 출력
         myinfo = MemberService.selectone_member(db, req.session['logined_uid'])
-        return templates.TemplateResponse('member/myinfo.html', {'request': req, 'myinfo': myinfo})  # 불러온 데이터를 /myinfo 안 myinfo로 받는다
-
+        return templates.TemplateResponse('member/myinfo.html', {'request': req, 'myinfo': myinfo})
+                                                                    # 불러온 데이터를 /myinfo안 myinfo로 받음
     except Exception as ex:
         print(f'▶▶▶myinfo 오류 발생 : {str(ex)}')
         return RedirectResponse(url='/member/error', status_code=303)
@@ -80,5 +80,5 @@ async def error(req: Request):
     return templates.TemplateResponse('member/error.html', {'request': req})
 
 @member_router.get('/loginfail', response_class=HTMLResponse)
-async def error(req: Request):
-    return templates.TemplateResponse('member/error.html', {'request': req})
+async def loginfail(req: Request):
+    return templates.TemplateResponse('member/loginfail.html', {'request': req})
