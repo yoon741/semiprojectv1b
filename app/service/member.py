@@ -27,7 +27,7 @@ class MemberService:
     @staticmethod
     def check_captcha(member):
         req_url = 'https://www.google.com/recaptcha/api/siteverify'
-        params = { 'secret': '6LeSoCsqAAAAAMU0PEaTL06z2zNjsqfORPRRZSh0',
+        params = { 'secret': '',
                    'response': member.captcha }
         res = requests.get(req_url, params=params)
         result = res.json()
