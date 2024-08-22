@@ -45,8 +45,9 @@ async def loginok(req: Request, db: Session = Depends(get_db)):
     try:
         redirect_url = '/member/loginfail'      # 로그인 실패시 loginfail로 이동
 
-        if MemberService.login_member(db, data):    # 로그인 성공 시
-            redirect_url = '/member/myinfo'     # myinfo 로 이동
+        if MemberService.login_member(db, data):            # 로그인 성공 시
+            req.session['logind_uid'] = data.get('userid')  # 세션에 아이디 저장하고
+            redirect_url = '/member/myinfo'                 # myinfo 로 이동
 
         return RedirectResponse(url=redirect_url, status_code=303)
 
