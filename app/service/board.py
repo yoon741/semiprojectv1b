@@ -10,7 +10,8 @@ class BoardService:
         try:
             stmt = select(Board.bno, Board.title, Board.userid,
                           Board.regdate, Board.views).order_by(Board.bno.desc())
-            result = db.execute(stmt).scalars()
+            result = db.execute(stmt)
+
             return result
 
         except SQLAlchemyError as ex:
