@@ -1,28 +1,43 @@
 {% extends 'include/base.html' %}
 
 {% block title %}
-세미프로젝트 - 게시판 글쓰기
+세미프로젝트 - 갤러리 글쓰기
 {% endblock %}
 
 {% block style %}
+<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
+        async defer></script>
+<script type="text/javascript">
+    var onloadCallback = () => {
+        grecaptcha.render('captcha', { 'sitekey' : '6LeSoCsqAAAAAJHAdzEpOiUxfLPl0AS_3fqTlAb7' });
+    };
+</script>
 <style>
     form { width: 450px; margin: 50px auto; }
     th { width: 150px; }
     tr { height: 35px; }
-    tr:nth-child(3) { vertical-align: top }
+    tr:nth-child(3) { vertical-align: top; }
+    tr:nth-child(4) { vertical-align: top; }
     #listbtn { margin-left: 115px; }
     input, textarea, button { padding: 5px; }
+
 </style>
 {% endblock %}
 
 {% block main %}
     <main>
-        <h2>글쓰기</h2>
-        <form action="writefrm" method="post">
+        <h2>갤러리 글쓰기</h2>
+        <form name="galleryfrm" enctype='multipart/form-data' method="post">
             <table>
                 <tr><th>제목</th><td><input type="text" name="title" id="title" required></td></tr>
                 <tr><th>작성자</th><td><input type="text" name="userid" id="userid" value="yoon123" readonly></td></tr>
                 <tr><th>본문</th><td><textarea name="contents" id="contents" rows="10" cols="45" required></textarea></td></tr>
+                <tr><th>첨부파일</th><td>
+                    <div><input type="file" name="files" id="file1" required></div>
+                    <div><input type="file" name="files" id="file2"></div>
+                    <div><input type="file" name="files" id="file3"></div>
+                </td></tr>
+                <tr><th>자동가입방지</th><td><div id="captcha"></div></td></tr>
                 <tr><td colspan="2">
                     <button type="button" id="listbtn" onclick="location.href='/gallery/list/1'">리스트로</button>
                     <button type="submit" id="writeokbtn">작성완료</button>
@@ -30,4 +45,20 @@
             </table>
         </form>
     </main>
+{% endblock %}
+
+{% blockscript %}
+<script>
+    let galleryfrm = document.galleryfrm;
+    galleryfrm.addEventListener('submit', async (e) => {
+       e.preventDefault();
+
+       const formData = new FormData(galleryfrm);
+
+       await fetch('/gallery/write', {
+           method: 'post',
+           body: formData
+       });
+    });
+</script>
 {% endblock %}
