@@ -3,6 +3,7 @@ from datetime import datetime
 from fastapi import Form
 from sqlalchemy import insert, select
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import aliased
 
 from app.model.gallery import Gallery, GalAttach
 from app.schema.gallery import NewGallery
@@ -69,4 +70,21 @@ class GalleryService:
 
         except SQLAlchemyError as ex:
             print(f'▶▶▶ select_gallery에서 오류발생 : {str(ex)}')
+            db.rollback()
+
+
+    @staticmethod
+    def selectone_gallery(gno, db):
+        try:
+            stmt = select(Gallery).where(Gallery.gno == gno)
+            result1 = db.execute(stmt).first()
+
+            ga = aliased(GalAttach)
+            stmt = select(ga.fname, ga.fsize).where(ga.gno == gno)
+            result2 = db.execute(stmt).fetchall()
+
+            return result1, result2
+
+        except SQLAlchemyError as ex:
+            print(f'▶▶▶ selectone_gallery에서 오류발생 : {str(ex)}')
             db.rollback()
