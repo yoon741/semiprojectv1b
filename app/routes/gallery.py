@@ -1,8 +1,6 @@
-import os
-from datetime import datetime
 from typing import List
 
-from fastapi import APIRouter, Request, UploadFile, File, Form
+from fastapi import APIRouter, Request, UploadFile, File
 from fastapi.params import Depends
 from sqlalchemy.orm import Session
 from starlette.responses import HTMLResponse, RedirectResponse
@@ -10,18 +8,20 @@ from starlette.templating import Jinja2Templates
 
 from app.dbfactory import get_db
 from app.schema.gallery import NewGallery
-from app.service.GalleryService import get_gallery_data, process_upload
+from app.service.gallery import get_gallery_data, process_upload, GalleryService
 
-# from app.service.gallery import GalleryService
 
 gallery_router = APIRouter()
 templates = Jinja2Templates(directory='views/templates')
 
 
 @gallery_router.get('/list/{cpg}', response_class=HTMLResponse)
-async def list(req: Request,db: Session = Depends(get_db)):
+async def list(req: Request, cpg: int, db: Session = Depends(get_db)):
     try:
-        return templates.TemplateResponse('gallery/list.html', {'request': req})
+        galist = GalleryService.select_gallery(cpg, db)
+
+        return templates.TemplateResponse('gallery/list.html',
+                                          {'request': req, 'galist': galist})
 
 
     except Exception as ex:
@@ -33,13 +33,18 @@ async def write(req: Request):
     return templates.TemplateResponse('gallery/write.html', {'request': req})
 
 @gallery_router.post('/write', response_class=HTMLResponse)
-async def write(req: Request, gallery: NewGallery = Depends(get_gallery_data),
-                files: List[UploadFile] = File(...)): # 맞는 형식으로 post되었는지 확인
-    print(gallery)
-    attachs = await process_upload(files)
-    print(attachs)
+async def writeok(req: Request, gallery: NewGallery = Depends(get_gallery_data),
+                files: List[UploadFile] = File(...),db: Session = Depends(get_db)): # 맞는 형식으로 post되었는지 확인
+    try:
+        print(gallery)
+        attachs = await process_upload(files)
+        print(attachs)
+        if GalleryService.insert_gallery(gallery, attachs, db):
+            return RedirectResponse('/gallery/list/1', 303)
 
-    return templates.TemplateResponse('gallery/write.html', {'request': req})
+    except Exception as ex:
+        print(f'▷▷▷ writeok 오류발생 {str(ex)}')
+        return RedirectResponse('member/error', 303)
 
 @gallery_router.get('/view', response_class=HTMLResponse)
 async def view(req: Request):
