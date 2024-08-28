@@ -38,7 +38,8 @@ async def list(req: Request, cpg: int, db: Session = Depends(get_db)):
 
         bdlist = BoardService.select_board(db, cpg)
 
-        return templates.TemplateResponse('board/list.html', {'request': req, 'bdlist': bdlist, 'cpg': cpg, 'stpgb': stpgb})
+        return templates.TemplateResponse('board/list.html',
+                                          {'request': req, 'bdlist': bdlist, 'cpg': cpg, 'stpgb': stpgb})
 
 
     except Exception as ex:
@@ -50,9 +51,10 @@ async def list(req: Request, ftype: str, fkey: str, cpg: int, db: Session = Depe
     try:
         stpgb = int((cpg - 1) / 10) * 10 + 1
 
-        bdlist = BoardService.find_select_board(db, ftype, fkey, cpg)
+        bdlist = BoardService.find_select_board(db, ftype, '%'+fkey+'%', cpg)
 
-        return templates.TemplateResponse('board/list.html', {'request': req, 'bdlist': bdlist, 'cpg': cpg, 'stpgb': stpgb})
+        return templates.TemplateResponse('board/list.html',
+                                          {'request': req, 'bdlist': bdlist, 'cpg': cpg, 'stpgb': stpgb})
 
 
     except Exception as ex:
