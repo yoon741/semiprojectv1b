@@ -45,14 +45,28 @@ async def list(req: Request, cpg: int, db: Session = Depends(get_db)):
         print(f'▶▶▶loginok 오류 발생 : {str(ex)}')
         return RedirectResponse(url='/member/error', status_code=303)
 
+@board_router.get('/list/{ftype}/{fkey}/{cpg}', response_class=HTMLResponse)
+async def list(req: Request, ftype: str, fkey: str, cpg: int, db: Session = Depends(get_db)):
+    try:
+        stpgb = int((cpg - 1) / 10) * 10 + 1
+
+        bdlist = BoardService.find_select_board(db, ftype, fkey, cpg)
+
+        return templates.TemplateResponse('board/list.html', {'request': req, 'bdlist': bdlist, 'cpg': cpg, 'stpgb': stpgb})
+
+
+    except Exception as ex:
+        print(f'▶▶▶loginok 오류 발생 : {str(ex)}')
+        return RedirectResponse(url='/member/error', status_code=303)
+
 
 @board_router.get('/write', response_class=HTMLResponse)
 async def write(req: Request):
     if 'logined_uid' not in req.session:
         return RedirectResponse('/member/login', 303)
 
-    return templates.TemplateResponse('board/write.html', {'request': req})
+    return templates.TemplateResponse('board/write.html', {'request': req})  # 로그인이 되어있을때만 허용
 
-@board_router.get('/view', response_class=HTMLResponse)
+@board_router.get('/view/{bno}', response_class=HTMLResponse)
 async def view(req: Request):
     return templates.TemplateResponse('board/view.html', {'request': req})
