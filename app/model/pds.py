@@ -6,7 +6,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.model.base import Base
 
 # back_populates : 양방향 관계설정, 관계의 상호참조
-class pds(Base):
+class Pds(Base):
     __tablename__ = 'pds'
 
     pno: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, index=True)
