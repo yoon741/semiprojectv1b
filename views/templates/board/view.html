@@ -12,12 +12,13 @@
     tr:nth-child(4) { vertical-align: top; }
     tr { height: 32px }
     #listbtn { margin-left: 100px; }
-    h3 { margin-top: 45px; }
-    #comtlist { margin-top: 25px; width: 700px }
-    .cmtbg { background: whitesmoke; padding: 7px 0 }
-    .rpybg { background: lightcyan; padding: 7px 0 }
-    .pushend { float: right }
-    .pushbtm { margin-top: 50px; }
+
+    {#h3 { margin-top: 45px; }#}
+    {##comtlist { margin-top: 25px; width: 700px }#}
+    {#.cmtbg { background: whitesmoke; padding: 7px 0 }#}
+    {#.rpybg { background: lightcyan; padding: 7px 0 }#}
+    {#.pushend { float: right }#}
+    {#.pushbtm { margin-top: 50px; }#}
 </style>
 {% endblock %}
 
@@ -25,10 +26,10 @@
 <main>
     <h2>게시판 본문보기</h2>
     <table>
-        <tr><th>제목</th><td>시간은 금이라구, 친구! 진짜라구, 친구! 정말이라구, 친구! 참말이라구, 친구</td></tr>
-        <tr><th>작성자</th><td>yoon123</td></tr>
-        <tr><th>작성일</th><td>2024-07-30 12:52:00 (777)</td></tr>
-        <tr><th>본문</th><td>시간은 금이라구, 친구!!시간은 금이라구, 친구!!시 간은 금이라구, 친구!!시간은 금이라구, 친구!!시간은 금이라구, 친구!!시간 은 금이라구, 친구!!시간은 금이라구, 친구!!시간은 금이라구, 친구!!시간은 금이라구, 친구!!시간은 금이라구, 친구!!시간은 금이라구, 친구!!시간은 금 이라구, 친구!!시간은 금이라구, 친구!!시간은 금이라구, 친구!!시간은 금이 라구, 친구!!시간은 금이라구, 친구!!시간은 금이라구, 친구!!시간은 금이라 구, 친구!!시간은 금이라구, 친구!!시간은 금이라구, 친구!!시간은 금이라구, 친구!!시간은 금이라구, 친구!!시간은 금이라구, 친구!!시간은 금이라구, 친 구!!시간은 금이라구, 친구!!시간은 금이라구, 친구!!시간은 금이라구, 친구 !!시간은 금이라구, 친구!!시간은 금이라구, 친구!!시간은 금이라구, 친구!! 시간은 금이라구, 친구!!시간은 금이라구, 친구!!시간은 금이라구, 친구!!시 간은 금이라구, 친구!!시간은 금이라구, 친구!!시간은 금이라구, 친구!!시간 은 금이라구, 친구!!시간은 금이라구, 친구!!시간은 금이라구, 친구!!시간은 금이라구, 친구!!시간은 금이라구, 친구!!시간은 금이라구, 친구!!시간은 금 이라구, 친구!!시간은 금이라구, 친구!!시간은 금이라구, 친구!!시간은 금이 라구, 친구!!시간은 금이라구, 친구!!시간은 금이라구, 친구!!시간은 금이라 구, 친구!!시간은 금이라구, 친구!!시간은 금이라구, 친구!!시간은 금이라구 , 친구!!시간은 금이라구, 친구!!시간은 금이라구, 친구!!시간은 금이라구, 친구!!시간은 금이라구, 친구!!시간은 금이라구, 친구!!시간은 금이라구, 친 구!!시간은 금이라구, 친구!!시간은 금이라구, 친구!!시간은 금이라구, 친구 !!시간은 금이라구, 친구!!시간은 금이라구, 친구!!시간은 금이라구, 친구!! 시간은 금이라구, 친구!!</td></tr>
+        <tr><th>제목</th><td>{{ boards.title }}</td></tr>
+        <tr><th>작성자</th><td>{{ boards.userid }}</td></tr>
+        <tr><th>작성일</th><td>{{ boards.regdate }} ({{ boards.views }})</td></tr>
+        <tr><th>본문</th><td>{{ boards.contents }}</td></tr>
         <tr><td colspan="2">
             <button type="button" id="listbtn" onclick="location.href='/board/list/1'">리스트로</button>
             <button type="button" id="mdfybtn" onclick="location.href='/board/modify'">수정하기</button>
@@ -68,7 +69,7 @@
                 <div class="col-auto"><label class="ms-3 pushbtm" for="reply">작성자</label></div>
                 <div class="col-8"><textarea class="form-control" name="reply" id="reply" rows="5"></textarea></div>
                 <div class="col-auto"><button class="btn btn-dark pushbtm" type="button" id="newbrbtn">
-                    <i class="bi bi-chat-right-dots"></i> 댓글쓰기</button></div>
+                    <i class="bi bi-chat-right-dots"></i>댓글쓰기</button></div>
             </div>
         </form>
     </div><!-- 댓글쓰기 -->
