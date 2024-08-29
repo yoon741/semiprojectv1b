@@ -33,15 +33,19 @@ class BoardService:
             db.execute(stmt)
 
             # 본문글 + 댓글 읽어오기
-            stmt = select(Board).join(Board.replys)\
+            # join을 사용하면 글과 댓글이 있는 경우에만 볼수 있게 출력 됨 때문에
+            # outerjoin를 사용하여 댓글이 없는 글도 보이게 설정해야함
+            # outerjoin: outer join
+            # contains_eager : 관계 맺은 하위 객체의 내용 즉시 로딩
+            stmt = select(Board).outerjoin(Board.replys)\
                 .options(contains_eager(Board.replys))\
                 .where(Board.bno == bno)\
                 .order_by(Reply.rpno)
 
-            result = db.execute(stmt).scalars().first()
-
+            result = db.execute(stmt)
             db.commit()  # 위 두작업이 모두 정상적으로 완료되면 commit
-            return result
+
+            return result.scalars().first()
 
 
         except SQLAlchemyError as ex:
