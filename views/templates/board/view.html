@@ -13,12 +13,12 @@
     tr { height: 32px }
     #listbtn { margin-left: 100px; }
 
-    {#h3 { margin-top: 45px; }#}
-    {##comtlist { margin-top: 25px; width: 700px }#}
-    {#.cmtbg { background: whitesmoke; padding: 7px 0 }#}
-    {#.rpybg { background: lightcyan; padding: 7px 0 }#}
-    {#.pushend { float: right }#}
-    {#.pushbtm { margin-top: 50px; }#}
+    h3 { margin-top: 45px; }
+    #comtlist { margin-top: 25px; width: 700px }
+    .cmtbg { background: whitesmoke; padding: 7px 0 }
+    .rpybg { background: lightcyan; padding: 7px 0 }
+    .pushend { float: right }
+    .pushbtm { margin-top: 50px; }
 </style>
 {% endblock %}
 
@@ -41,25 +41,17 @@
     <h3 class="offset-1"><i class="bi bi-chat-right-dots"></i>나도 한마디</h3>
 
     <table class="offset-1.8" id="comtlist">
-        <tr><td><h4>abc123</h4></td>
-            <td><div class="cmtbg">2024.12.01
-                <span class="pushend"><a href="#">[추가]</a></span></div>
-                <p>댓글댓글댓글댓글</p></td></tr>
+        {% for rp in boards.replys  %}
+            <tr><td><h4>{{ rp.userid }}</h4></td>
+                <td><div class="cmtbg">{{ rp.regdate }}
+                    <span class="pushend"><a href="#">[추가]</a></span></div>
+                    <p>{{ rp.reply }}</p></td></tr>
 
-        <tr><td></td><td><div class="rpybg">
-                <span>987xyz</span>
-                <span class="pushend">2024.11.01</span></div>
-                <p>대댓글대댓글대댓글대댓글</p></td></tr>
-
-        <tr><td><h4>987xyz</h4></td>
-            <td><div class="cmtbg">2024.12.01
-                <span class="pushend"><a href="#">[추가]</a></span></div>
-                <p>댓글댓글댓글댓글</p></td></tr>
-
-        <tr><td><h4>zzyzzy</h4></td>
-            <td><div class="cmtbg">2024.12.01
-                <span class="pushend"><a href="#">[추가]</a></span></div>
-                <p>댓글댓글댓글댓글</p></td></tr>
+    {#        <tr><td></td><td><div class="rpybg">#}
+    {#                <span>987xyz</span>#}
+    {#                <span class="pushend">2024.11.01</span></div>#}
+    {#                <p>대댓글대댓글대댓글대댓글</p></td></tr>#}
+        {% endfor %}
     </table>
     <!-- 댓글목록 -->
 
