@@ -15,7 +15,7 @@ class Board(Base):
     regdate: Mapped[datetime] = mapped_column(default=datetime.now)
     views: Mapped[int] = mapped_column(default=0)
     contents: Mapped[str]
-    reply = relationship('Reply', back_populates='board') # 밑에 reply와 연결
+    replys = relationship('Reply', back_populates='board') # 밑에 reply와 연결
 
 
 class Reply(Base):

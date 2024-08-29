@@ -51,7 +51,6 @@ async def list(req: Request, cpg: int, db: Session = Depends(get_db)):
         return templates.TemplateResponse('board/list.html',
                                           {'request': req, 'bdlist': bdlist, 'cpg': cpg, 'stpgb': stpgb})
 
-
     except Exception as ex:
         print(f'▶▶▶loginok 오류 발생 : {str(ex)}')
         return RedirectResponse(url='/member/error', status_code=303)
@@ -66,7 +65,6 @@ async def list(req: Request, ftype: str, fkey: str, cpg: int, db: Session = Depe
         return templates.TemplateResponse('board/list.html',
                                           {'request': req, 'bdlist': bdlist, 'cpg': cpg, 'stpgb': stpgb})
 
-
     except Exception as ex:
         print(f'▶▶▶loginok 오류 발생 : {str(ex)}')
         return RedirectResponse(url='/member/error', status_code=303)
@@ -79,6 +77,14 @@ async def write(req: Request):
 
     return templates.TemplateResponse('board/write.html', {'request': req})  # 로그인이 되어있을때만 허용
 
+
 @board_router.get('/view/{bno}', response_class=HTMLResponse)
-async def view(req: Request):
-    return templates.TemplateResponse('board/view.html', {'request': req})
+async def view(req: Request, bno: int, db: Session = Depends(get_db)):
+    try:
+        boards = BoardService.selectone_board(bno, db)
+        return templates.TemplateResponse('board/view.html',
+                         {'request': req, 'boards': boards})
+
+    except Exception as ex:
+        print(f'▶▶▶view 오류 발생 : {str(ex)}')
+        return RedirectResponse(url='/member/error', status_code=303)
