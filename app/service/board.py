@@ -126,3 +126,19 @@ class BoardService:
         except SQLAlchemyError as ex:
             print(f'▸▸▸ delete_board 오류발생 : {str(ex)}')
             db.rollback()
+
+    @staticmethod
+    def update_board(db, board):  # bno어떤 게시물을 삭제할것인지
+        try:
+            stmt = update(Board).values(title=board.title,
+               userid=board.userid, contents=board.contents,
+               regdate=board.regdate)\
+                    .where(Board.bno == board.bno)
+            result = db.execute(stmt)
+
+            db.commit()
+            return result
+
+        except SQLAlchemyError as ex:
+            print(f'▸▸▸ update_board 오류발생 : {str(ex)}')
+            db.rollback()
